@@ -6,16 +6,31 @@ from math import factorial, sqrt, exp, pi
 
 filename = "./demography_data.csv"
 
-def countries_loarder(data):
+def country_loader(data, index):
     countries =[]
     i = 0
     while i < len(data):
-        countries.append(data[i][1])
+        countries.append(data[i][index])
+        i+=1
+    return countries
+
+def countries_loader(data, index):
+    countries =[]
+    i = 0
+    j = 0
+    print(index[0])
+    while i < len(data):
+        try:
+            index[j]
+        except:
+            break
+        if i == index[j]:
+            countries.append(data[i])
+            j+=1
         i+=1
     return countries
 
 def csv_loader():
-    print("Enter in")
     data = []
     with open(filename, 'r') as csv_file:
         reader = csv.reader(csv_file, delimiter=';')
@@ -24,26 +39,30 @@ def csv_loader():
             data.append(row)
         return data
 
-def compare_country(data, arg):
+def compare_country(countries_l, arg, countries_w):
     i = 0
     j = 0
-    count = 0
-    res = 0
+    index = []
     print("Country: ", sep ="", end="")
-    while i < len(data):
+    while i < len(countries_l):
         try:
             arg[j]
         except:
             break
-        if arg[j] == data[i] and j == len(arg[j])-1 :
-            print(data[i])
+        if arg[j] == countries_l[i] and j == len(arg[j]) - 1 :
+            print(countries_w[i])
+            index.append(i)
             j += 1
             i = 0
-        elif arg[j] == data[i]:
-            print(data[i], " ", sep=',' , end ="")
+        elif arg[j] == countries_l[i]:
+            print(countries_w[i], " ", sep=',' , end ="")
+            index.append(i)
             j += 1
             i = 0
         i += 1
+    index.sort()
+    return(index)
+
     if j != len(arg):
         print("COUNTRY NOT FOUND", arg[j])
         exit(84)
@@ -55,7 +74,10 @@ def main():
         arg.append(sys.argv[i])
         i += 1
     data = csv_loader()
-    countries = countries_loarder(data)
-    compare_country(countries, arg)
+    countries_letters = country_loader(data, 1)
+    countries_words = country_loader(data, 0)
+    index = compare_country(countries_letters, arg, countries_words)
+    countries = countries_loader(data, index)
+    print(countries)
 
 main()
