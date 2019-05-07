@@ -79,6 +79,8 @@ def main():
         arg.append(sys.argv[i])
         i += 1
     data = csv_loader()
+    if len(arg) < 1:
+        exit(84)
     countries_letters = country_loader(data, 1)
     countries_words = country_loader(data, 0)
     index = compare_country(countries_letters, arg, countries_words)
