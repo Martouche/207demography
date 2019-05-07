@@ -143,7 +143,6 @@ def demography(datas, av):
 #	if len(countries) == 0:
 #        print("Country not found.")
 #        return 84
-    print(countries)
     show_countries(countries)
     a, b = fit1(countries)
     c, d = fit2(countries)

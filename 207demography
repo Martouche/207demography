@@ -18,7 +18,6 @@ def countries_loader(data, index):
     countries =[]
     i = 0
     j = 0
-    print(index[0])
     while i < len(data):
         try:
             index[j]
@@ -67,6 +66,12 @@ def compare_country(countries_l, arg, countries_w):
         print("COUNTRY NOT FOUND", arg[j])
         exit(84)
 
+def Fit1():
+    print("Fit 1")
+
+def Fit2():
+    print("Fit 2")
+
 def main():
     arg = []
     i = 1
@@ -78,6 +83,8 @@ def main():
     countries_words = country_loader(data, 0)
     index = compare_country(countries_letters, arg, countries_words)
     countries = countries_loader(data, index)
-    print(countries)
+    Fit1()
+    Fit2()
+
 
 main()
