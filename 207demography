@@ -48,7 +48,7 @@ def compare_country(countries_l, arg, countries_w):
             arg[j]
         except:
             break
-        if arg[j] == countries_l[i] and j == len(arg[j]) - 1 :
+        if arg[j] == countries_l[i] and j == len(arg) -1:
             print(countries_w[i])
             index.append(i)
             j += 1
