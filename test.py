@@ -51,7 +51,7 @@ def main(args):
                 db[cc] = Country(row)
     except Exception as ex:
         print('%s: failed to read country data base: %s' % (args[0], ex), file=sys.stderr)
-        return 84
+        #return 84
 
     countries = []
     for arg in args[1:]:

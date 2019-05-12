@@ -5,6 +5,14 @@ from sys import stdin
 from math import factorial, sqrt, exp, pi
 
 filename = "./demography_data.csv"
+years = []
+
+def load_years():
+    year = 1960
+    while year <= 2017:
+        years.append(year)
+        year += 1
+    return years
 
 def country_loader(data, index):
     countries =[]
@@ -66,11 +74,70 @@ def compare_country(countries_l, arg, countries_w):
         print("COUNTRY NOT FOUND", arg[j])
         exit(84)
 
-def Fit1():
-    print("Fit 1")
+def countries_total(countries):
+    i = 0
+    total_countries = [0] * 58
+    for i in range(0, len(countries), 1):
+        for j in range(2, len(countries[i]), 1):
+            total_countries[j - 2] += int(countries[i][j])
+    return total_countries
 
-def Fit2():
+def get_a_b(sums):
+    a = (sums[0] * sums[2] - sums[1] * sums[3]) / (len(years) * sums[2] - sums[1] ** 2)
+    b = ((len(years) * sums[3]) - (sums[0] * sums[1])) / ((len(years) * sums[2]) - math.pow(sums[1], 2))
+
+    return a, b
+
+def get_sums_2(tab):
+    sums = [0, 0, 0, 0]
+
+    for i in range(0, len(tab)):
+        sums[0] += years[i]
+        sums[1] += tab[i]
+        sums[2] += math.pow(tab[i], 2)
+        sums[3] += tab[i] * years[i]
+    return sums
+
+def get_sums1(tab):
+    sums = [0, 0, 0, 0]
+
+    for i in range(0, len(tab), 1):
+        sums[0] += tab[i]
+        sums[1] += years[i]
+        sums[2] += pow(years[i], 2)
+        sums[3] += tab[i]*years[i]
+    return sums
+
+def Fit1(total_countries):
+    print("Fit 1")
+    res = 0
+    sums = get_sums1(total_countries)
+    a, b = get_a_b(sums)
+    if a >= 0:
+        print("\tY = ", format(b/1000000, ".2f"), " X + ", format(a/1000000, ".2f"), sep="")
+    else:
+        print("\tY = ", format(b/1000000, ".2f"), " X - ", format(a/1000000 * -1, ".2f"), sep="")
+    for i in range(0, len(total_countries)):
+        func = years[i] * b + a
+        res += ((func - total_countries[i]) ** 2 / len(total_countries))
+    print("\tRoot-mean-square deviation: ", format(math.sqrt(res)/1000000, ".2f"), sep="")
+    print("\tPopulation in 2050: ", format((2050 * b + a)/1000000, ".2f"), sep="")
+
+def Fit2(total_countries):
     print("Fit 2")
+    res = 0
+    sums = get_sums_2(total_countries)
+    a, b = get_a_b(sums)
+    if a >= 0:
+        print("\tY = ", format(b, ".2f"), " X + ", format(a, ".2f"), sep="")
+    else:
+        print("\tY = ", format(b, ".2f"), " X - ", format(a * -1, ".2f"), sep="")
+    for i in range(0, len(total_countries)):
+        func = years[i] * b + a
+        res += ((func - total_countries[i]) ** 2 / len(total_countries))
+    print("\tRoot-mean-square deviation: ", format(math.sqrt(res), ".2f"), sep="")
+    print("\tPopulation in 2050: ", format(2050 * b + a, ".2f"), sep="")
+
 
 def main():
     arg = []
@@ -85,8 +152,10 @@ def main():
     countries_words = country_loader(data, 0)
     index = compare_country(countries_letters, arg, countries_words)
     countries = countries_loader(data, index)
-    Fit1()
-    Fit2()
+    years = load_years()
+    total_countries = countries_total(countries)
+    Fit1(total_countries)
+    Fit2(total_countries)
 
 
 main()
