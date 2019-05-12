@@ -94,7 +94,7 @@ def get_sums_2(tab):
     for i in range(0, len(tab)):
         sums[0] += years[i]
         sums[1] += tab[i]
-        sums[2] += math.pow(tab[i], 2)
+        sums[2] += pow(tab[i], 2)
         sums[3] += tab[i] * years[i]
     return sums
 
@@ -129,15 +129,14 @@ def Fit2(total_countries):
     sums = get_sums_2(total_countries)
     a, b = get_a_b(sums)
     if a >= 0:
-        print("\tY = ", format(b, ".2f"), " X + ", format(a, ".2f"), sep="")
+        print("\tX = ", format(b, ".2f"), " Y + ", format(a, ".2f"), sep="")
     else:
-        print("\tY = ", format(b, ".2f"), " X - ", format(a * -1, ".2f"), sep="")
+        print("\tX = ", format(b, ".2f"), " Y - ", format(a * -1, ".2f"), sep="")
     for i in range(0, len(total_countries)):
-        func = years[i] * b + a
+        func = (years[i] - a) / b
         res += ((func - total_countries[i]) ** 2 / len(total_countries))
-    print("\tRoot-mean-square deviation: ", format(math.sqrt(res), ".2f"), sep="")
-    print("\tPopulation in 2050: ", format(2050 * b + a, ".2f"), sep="")
-
+    print("\tRoot-mean-square deviation: ", format(math.sqrt(res)/1000000, ".2f"), sep="")
+    print("\tPopulation in 2050: ", format(((2050 - a) / b/1000000), ".2f"), sep="")
 
 def main():
     arg = []
